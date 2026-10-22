@@ -1,0 +1,46 @@
+// Init script: makes the legacy `com.facebook.react:react-native-gradle-plugin` module
+// (still referenced in buildscript blocks of some third-party libraries) resolvable by
+// exposing the prebuilt artifacts shipped inside @react-native/gradle-plugin via a
+// local maven-layout directory.
+
+import groovy.xml.MarkupBuilder
+
+def moviraRoot = System.getProperty("movira.root")
+def rnPluginDir = new File(moviraRoot, "node_modules/@react-native/gradle-plugin")
+def mainPluginJar = new File(rnPluginDir, "react-native-gradle-plugin/build/libs/react-native-gradle-plugin.jar")
+def sharedJar = new File(rnPluginDir, "shared/build/libs/shared.jar")
+def mavenDir = new File(rnPluginDir, "maven/com/facebook/react/react-native-gradle-plugin/0.0.0")
+
+def fatJar = new File(mavenDir, "react-native-gradle-plugin-0.0.0.jar")
+if ((!fatJar.exists() || !sharedJar.exists()) && mainPluginJar.exists()) {
+  mavenDir.mkdirs()
+  def sw = new StringWriter()
+  def xml = new MarkupBuilder(sw)
+  xml.project(version: "1.0", encoding: "UTF-8") {
+    modelVersion("4.0.0")
+    groupId("com.facebook.react")
+    artifactId("react-native-gradle-plugin")
+    version("0.0.0")
+  }
+  new File(mavenDir, "react-native-gradle-plugin-0.0.0.pom").text = sw.toString()
+  def ant = new groovy.util.AntBuilder()
+  ant.zip(destfile: fatJar, update: true) {
+    zipfileset(src: mainPluginJar)
+    zipfileset(src: sharedJar)
+  }
+}
+
+allprojects { p ->
+  p.buildscript {
+    repositories {
+      maven { url "file:///${moviraRoot.replace('\\\\', '/')}/node_modules/@react-native/gradle-plugin/maven" }
+    }
+    configurations.classpath {
+      resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'com.facebook.react' && details.requested.name == 'react-native-gradle-plugin') {
+          details.useVersion('0.0.0')
+        }
+      }
+    }
+  }
+}

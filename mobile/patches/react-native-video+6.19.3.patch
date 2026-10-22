@@ -1,0 +1,15 @@
+diff --git a/node_modules/react-native-video/android/src/main/java/com/brentvatne/react/VideoDecoderInfoModule.kt b/node_modules/react-native-video/android/src/main/java/com/brentvatne/react/VideoDecoderInfoModule.kt
+index 2cd41ca..9d260f1 100644
+--- a/node_modules/react-native-video/android/src/main/java/com/brentvatne/react/VideoDecoderInfoModule.kt
++++ b/node_modules/react-native-video/android/src/main/java/com/brentvatne/react/VideoDecoderInfoModule.kt
+@@ -62,7 +62,9 @@ class VideoDecoderInfoModule(reactContext: ReactApplicationContext?) : ReactCont
+     }
+ 
+     @ReactMethod
+-    fun isHEVCSupported(p: Promise) = isCodecSupported("video/hevc", 1920.0, 1080.0, p)
++    fun isHEVCSupported(p: Promise) {
++        isCodecSupported("video/hevc", 1920.0, 1080.0, p)
++    }
+ 
+     companion object {
+         private val WIDEVINE_UUID = UUID(-0x121074568629b532L, -0x5c37d8232ae2de13L)

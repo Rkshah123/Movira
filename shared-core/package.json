@@ -1,0 +1,18 @@
+{
+  "name": "movira-shared-core",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Movira shared core: platform-agnostic media player services",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch"
+  },
+  "dependencies": {
+    "@babel/runtime": "^8.0.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

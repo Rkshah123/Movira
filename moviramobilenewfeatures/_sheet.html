@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+body{background:#111;color:#eee;font-family:Arial;margin:0;padding:8px}
+.g{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+figure{margin:0;background:#000;border:1px solid #333}
+img{width:100%;display:block}
+figcaption{font-size:11px;padding:3px;color:#8ef}
+</style></head><body>
+<div class="g" id="g"></div>
+<script>
+const names=["WhatsApp Image 2026-10-05 at 01.55.57.jpeg","WhatsApp Image 2026-10-05 at 01.55.58.jpeg","WhatsApp Image 2026-10-05 at 01.55.58 (1).jpeg","WhatsApp Image 2026-10-05 at 01.55.58 (2).jpeg","WhatsApp Image 2026-10-05 at 01.55.58 (3).jpeg","WhatsApp Image 2026-10-05 at 01.55.59.jpeg","WhatsApp Image 2026-10-05 at 01.55.59 (1).jpeg","WhatsApp Image 2026-10-05 at 01.55.59 (2).jpeg","WhatsApp Image 2026-10-05 at 01.55.59 (3).jpeg","WhatsApp Image 2026-10-05 at 01.56.00.jpeg","WhatsApp Image 2026-10-05 at 01.56.00 (1).jpeg","WhatsApp Image 2026-10-05 at 01.56.00 (2).jpeg","WhatsApp Image 2026-10-05 at 01.56.00 (3).jpeg","WhatsApp Image 2026-10-05 at 01.56.01.jpeg","WhatsApp Image 2026-10-05 at 01.56.01 (1).jpeg","WhatsApp Image 2026-10-05 at 01.56.01 (2).jpeg","WhatsApp Image 2026-10-05 at 01.56.02.jpeg","WhatsApp Image 2026-10-05 at 01.56.02 (1).jpeg","WhatsApp Image 2026-10-05 at 01.56.02 (2).jpeg","WhatsApp Image 2026-10-05 at 01.56.02 (3).jpeg","WhatsApp Image 2026-10-05 at 01.56.03.jpeg"];
+document.getElementById('g').innerHTML=names.map((n,i)=>`<figure><img src="${encodeURIComponent(n)}"><figcaption>#${i+1} ${n.replace('WhatsApp Image 2026-10-05 at ','')}</figcaption></figure>`).join('');
+</script></body></html>

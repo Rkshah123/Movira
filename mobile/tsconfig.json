@@ -1,0 +1,25 @@
+{
+  "extends": "@react-native/typescript-config",
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-native",
+    "lib": ["es2022"],
+    "types": [],
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@shared": ["../shared-core/src/index.ts"],
+      "@shared/*": ["../shared-core/src/*"]
+    }
+  },
+  "include": ["src", "../shared-core/src/**/*.ts"],
+  "exclude": ["node_modules"]
+}

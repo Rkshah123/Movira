@@ -1,0 +1,84 @@
+appId: com.movira.player
+productName: Movira
+# Fully offline, personal use: never publish and never check for updates.
+publish: null
+directories:
+  output: release
+files:
+  - dist/**/*
+  - package.json
+  - "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}"
+  - "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}"
+  - "!**/node_modules/*.d.ts"
+  - "!**/node_modules/.bin"
+  - "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}"
+  - .editorconfig
+  - "!**/.editorconfig"
+extraResources:
+  - from: assets
+    to: assets
+    filter:
+      - "**/*"
+# ffmpeg.exe must live on disk (not inside asar) for the fallback streaming tier.
+asarUnpack:
+  - "node_modules/ffmpeg-static/**"
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: assets/icon.ico
+  # Register Movira in Windows "Open with" so double-clicking a media file in
+  # Explorer (or right-click → Open with) offers Movira directly.
+  fileAssociations:
+    - { ext: mp4, name: Movira Video, role: Player }
+    - { ext: m4v, name: Movira Video, role: Player }
+    - { ext: mkv, name: Movira Video, role: Player }
+    - { ext: webm, name: Movira Video, role: Player }
+    - { ext: mov, name: Movira Video, role: Player }
+    - { ext: avi, name: Movira Video, role: Player }
+    - { ext: wmv, name: Movira Video, role: Player }
+    - { ext: asf, name: Movira Video, role: Player }
+    - { ext: flv, name: Movira Video, role: Player }
+    - { ext: f4v, name: Movira Video, role: Player }
+    - { ext: ts, name: Movira Video, role: Player }
+    - { ext: m2ts, name: Movira Video, role: Player }
+    - { ext: mts, name: Movira Video, role: Player }
+    - { ext: vob, name: Movira Video, role: Player }
+    - { ext: mpg, name: Movira Video, role: Player }
+    - { ext: mpeg, name: Movira Video, role: Player }
+    - { ext: mpe, name: Movira Video, role: Player }
+    - { ext: 3gp, name: Movira Video, role: Player }
+    - { ext: 3g2, name: Movira Video, role: Player }
+    - { ext: ogv, name: Movira Video, role: Player }
+    - { ext: divx, name: Movira Video, role: Player }
+    - { ext: xvid, name: Movira Video, role: Player }
+    - { ext: rm, name: Movira Video, role: Player }
+    - { ext: rmvb, name: Movira Video, role: Player }
+    - { ext: mxf, name: Movira Video, role: Player }
+    - { ext: mp3, name: Movira Audio, role: Player }
+    - { ext: wav, name: Movira Audio, role: Player }
+    - { ext: flac, name: Movira Audio, role: Player }
+    - { ext: m4a, name: Movira Audio, role: Player }
+    - { ext: aac, name: Movira Audio, role: Player }
+    - { ext: ogg, name: Movira Audio, role: Player }
+    - { ext: oga, name: Movira Audio, role: Player }
+    - { ext: opus, name: Movira Audio, role: Player }
+    - { ext: wma, name: Movira Audio, role: Player }
+    - { ext: aiff, name: Movira Audio, role: Player }
+    - { ext: mka, name: Movira Audio, role: Player }
+    - { ext: ac3, name: Movira Audio, role: Player }
+    - { ext: eac3, name: Movira Audio, role: Player }
+    - { ext: dts, name: Movira Audio, role: Player }
+    - { ext: ape, name: Movira Audio, role: Player }
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Movira
+  # Registers Movira under Windows' RegisteredApplications/Capabilities so it
+  # appears in "Open with" and Settings → Default apps (user opt-in, never
+  # hijacks another player's defaults).
+  include: build/installer.nsh

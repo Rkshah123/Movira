@@ -1,0 +1,758 @@
+/* =========================================================
+   MOVIRA — MOBILE UI SKELETON
+   HTML + CSS ONLY
+   ========================================================= */
+
+:root {
+  --bg: #0b0d12;
+  --surface: #141821;
+  --surface-2: #1c2230;
+  --surface-3: #252d3d;
+  --surface-highlight: #202a3c;
+  --line: rgba(112, 151, 255, 0.14);
+  --line-soft: rgba(255, 255, 255, 0.075);
+  --text: #f5f7ff;
+  --muted: #9ca7bd;
+  --accent: #6f91ff;
+  --accent-bright: #8ea8ff;
+  --accent-soft: rgba(111, 145, 255, 0.14);
+  --radius: 14px;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  background: #090a0c;
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* ---------------------------------------------------------
+   MOBILE APP FRAME
+   --------------------------------------------------------- */
+
+.phone-app {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+@media (min-width: 481px) {
+  body {
+    display: flex;
+    justify-content: center;
+    background: #08090b;
+  }
+
+  .phone-app {
+    min-height: 100dvh;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.04);
+  }
+}
+
+/* ---------------------------------------------------------
+   PAGE / SCREEN SYSTEM
+   --------------------------------------------------------- */
+
+.screen {
+  position: absolute;
+  inset: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+  display: none;
+}
+
+#video-tab:checked ~ .screen-home,
+#audio-tab:checked ~ .screen-audio,
+#browse-tab:checked ~ .screen-browse,
+#playlist-tab:checked ~ .screen-playlist,
+#more-tab:checked ~ .screen-more {
+  display: block;
+}
+
+.screen-home {
+  display: block;
+}
+
+/* Hide radio controls */
+input[type="radio"],
+input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------
+   TOP BAR
+   --------------------------------------------------------- */
+
+.top-bar {
+  height: 66px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.brand-name {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.movira-logo {
+  position: relative;
+  width: 31px;
+  height: 31px;
+  flex: 0 0 31px;
+  border-radius: 9px;
+  background: linear-gradient(145deg, #252f45, #171d2b);
+  border: 1px solid rgba(111,145,255,.18);
+  overflow: hidden;
+}
+
+.movira-logo::before {
+  content: "";
+  position: absolute;
+  width: 13px;
+  height: 19px;
+  left: 8px;
+  top: 5px;
+  border: 3px solid var(--accent-bright);
+  border-left-width: 4px;
+  border-radius: 3px;
+  transform: skewY(-8deg);
+}
+
+.movira-logo span {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  right: 6px;
+  bottom: 6px;
+  border-radius: 50%;
+  background: var(--accent-bright);
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.icon-button {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+/* Search icon */
+.search-icon {
+  position: relative;
+  display: block;
+  width: 18px;
+  height: 18px;
+  border: 1.8px solid var(--accent-bright);
+  border-radius: 50%;
+}
+
+.search-icon::after {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 1.8px;
+  right: -5px;
+  bottom: -2px;
+  background: var(--accent-bright);
+  transform: rotate(45deg);
+  transform-origin: left center;
+}
+
+/* Vertical dots */
+.dots-vertical {
+  position: relative;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-bright);
+  box-shadow:
+    0 -7px 0 #dedfe1,
+    0 7px 0 #dedfe1;
+}
+
+/* ---------------------------------------------------------
+   SUB NAVIGATION
+   --------------------------------------------------------- */
+
+.sub-navigation {
+  height: 43px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.sub-navigation::-webkit-scrollbar {
+  display: none;
+}
+
+.sub-tab {
+  height: 32px;
+  flex: 0 0 auto;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sub-tab.active {
+  color: var(--text);
+  background: linear-gradient(145deg, #202a3d, #181e2b);
+}
+
+/* ---------------------------------------------------------
+   CONTENT / EMPTY STATE
+   --------------------------------------------------------- */
+
+.content-area {
+  position: absolute;
+  top: 109px;
+  right: 0;
+  bottom: 74px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+}
+
+.empty-content p {
+  max-width: 310px;
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* Playlist has no sub navigation */
+.playlist-empty {
+  top: 66px;
+}
+
+/* ---------------------------------------------------------
+   BROWSE
+   --------------------------------------------------------- */
+
+.browse-content {
+  position: absolute;
+  top: 66px;
+  right: 0;
+  bottom: 74px;
+  left: 0;
+  padding: 18px 14px;
+  overflow-y: auto;
+}
+
+.browse-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 11px;
+}
+
+.browse-group + .browse-group {
+  margin-top: 24px;
+}
+
+.browse-box {
+  min-height: 94px;
+  padding: 14px;
+  border: 1px solid rgba(111,145,255,.09);
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, #171d29, #11151d);
+  box-shadow: 0 8px 22px rgba(0,0,0,.16);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-size: 14px;
+  text-align: left;
+}
+
+.box-symbol,
+.about-row-icon {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  opacity: .82;
+}
+
+/* Simple CSS skeleton symbols */
+.favorite-symbol::before {
+  content: "♡";
+  font-size: 25px;
+}
+
+.download-symbol::before {
+  content: "↓";
+  font-size: 27px;
+}
+
+.movie-symbol {
+  border: 1.5px solid #aaa;
+  border-radius: 4px;
+}
+
+.movie-symbol::before,
+.movie-symbol::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  height: 2px;
+  background: #aaa;
+}
+
+.movie-symbol::before {
+  top: 5px;
+}
+
+.movie-symbol::after {
+  bottom: 5px;
+}
+
+.music-symbol::before {
+  content: "♫";
+  font-size: 24px;
+}
+
+.storage-symbol {
+  border: 1.5px solid #aaa;
+  border-radius: 4px;
+}
+
+.storage-symbol::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 5px;
+  height: 2px;
+  background: #aaa;
+}
+
+.sd-symbol {
+  border: 1.5px solid #aaa;
+  border-radius: 3px;
+  transform: rotate(30deg);
+}
+
+/* ---------------------------------------------------------
+   MORE
+   --------------------------------------------------------- */
+
+.more-content {
+  position: absolute;
+  top: 66px;
+  right: 0;
+  bottom: 74px;
+  left: 0;
+  padding: 18px 14px;
+}
+
+.settings-box {
+  width: 100%;
+  min-height: 66px;
+  margin-bottom: 11px;
+  padding: 0 16px;
+  border: 1px solid rgba(111,145,255,.09);
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, #171d29, #11151d);
+  box-shadow: 0 8px 22px rgba(0,0,0,.16);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 15px;
+  text-align: left;
+}
+
+.settings-symbol::before {
+  content: "⚙";
+  font-size: 22px;
+}
+
+.about-symbol::before {
+  content: "ⓘ";
+  font-size: 22px;
+}
+
+/* ---------------------------------------------------------
+   BOTTOM NAVIGATION
+   --------------------------------------------------------- */
+
+.bottom-navigation {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 74px;
+  padding: 7px 7px max(7px, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  background: rgba(10,13,19,.98);
+  box-shadow: 0 -8px 28px rgba(0,0,0,.18);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+}
+
+.bottom-item {
+  min-width: 0;
+  height: 56px;
+  border-radius: 11px;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.bottom-item.active {
+  color: var(--text);
+  background: linear-gradient(145deg, #202a3d, #181e2b);
+}
+
+.nav-symbol {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  opacity: .86;
+}
+
+/* Video */
+.video-symbol {
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+}
+
+.video-symbol::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: 5px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 6px solid currentColor;
+}
+
+/* Audio */
+.audio-symbol::before {
+  content: "♪";
+  position: absolute;
+  left: 1px;
+  top: -7px;
+  font-size: 25px;
+}
+
+/* Browse */
+.browse-symbol {
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+}
+
+.browse-symbol::before,
+.browse-symbol::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  height: 1.5px;
+  background: currentColor;
+}
+
+.browse-symbol::before {
+  top: 6px;
+}
+
+.browse-symbol::after {
+  top: 12px;
+}
+
+/* Playlist */
+.playlist-symbol::before {
+  content: "☰";
+  position: absolute;
+  top: -6px;
+  font-size: 21px;
+}
+
+/* More */
+.more-symbol {
+  width: 4px;
+  height: 4px;
+  margin-top: 0;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow:
+    0 -7px 0 currentColor,
+    0 7px 0 currentColor;
+}
+
+/* ---------------------------------------------------------
+   REFRESH FLOATING VISUAL
+   --------------------------------------------------------- */
+
+.refresh-float {
+  position: fixed;
+  right: 15px;
+  bottom: 88px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 50%;
+  background: linear-gradient(145deg, #202a3d, #181e2b);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/*
+  Skeleton only:
+  The refresh control is visually prepared here.
+  JavaScript can later make the vertical "..." action open it
+  and perform a real refresh.
+*/
+
+.refresh-symbol {
+  font-size: 22px;
+}
+
+/* ---------------------------------------------------------
+   ABOUT MODAL
+   --------------------------------------------------------- */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: none;
+  background: var(--bg);
+}
+
+#about-modal:checked ~ .about-modal {
+  display: block;
+}
+
+.modal-page {
+  width: 100%;
+  min-height: 100dvh;
+  background: var(--bg);
+}
+
+.about-header {
+  height: 62px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.back-button,
+.close-button {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.back-arrow {
+  width: 11px;
+  height: 11px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.about-content {
+  padding: 45px 24px 30px;
+  text-align: center;
+}
+
+.large-movira-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 17px;
+}
+
+.movira-logo.large {
+  width: 88px;
+  height: 88px;
+  border-radius: 24px;
+}
+
+.movira-logo.large::before {
+  width: 36px;
+  height: 55px;
+  left: 23px;
+  top: 14px;
+  border-width: 7px;
+}
+
+.movira-logo.large span {
+  width: 13px;
+  height: 13px;
+  right: 16px;
+  bottom: 16px;
+}
+
+.about-content h1 {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.android-text {
+  margin: 7px 0 34px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.about-row {
+  width: 100%;
+  min-height: 58px;
+  padding: 0 15px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(111,145,255,.09);
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, #171d29, #11151d);
+  box-shadow: 0 8px 22px rgba(0,0,0,.16);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.website-symbol::before {
+  content: "↗";
+  font-size: 22px;
+}
+
+.developer-symbol::before {
+  content: "♙";
+  font-size: 22px;
+}
+
+/* ---------------------------------------------------------
+   AUTHORS / DEVELOPER
+   --------------------------------------------------------- */
+
+#author-modal:checked ~ .author-modal {
+  display: block;
+}
+
+.author-page {
+  min-height: 100dvh;
+  background: var(--bg);
+}
+
+.author-header {
+  min-height: 62px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.close-button span {
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.author-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.author-content {
+  padding: 25px 18px;
+}
+
+.author-name {
+  padding: 16px 14px;
+  border-radius: 10px;
+  background: var(--surface);
+  font-size: 15px;
+}
+
+/* ---------------------------------------------------------
+   BASIC TOUCH / FOCUS
+   --------------------------------------------------------- */
+
+button,
+label {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+button:active,
+label:active {
+  opacity: .72;
+}
+
+button:focus-visible,
+label:focus-visible {
+  outline: 2px solid rgba(255,255,255,.35);
+  outline-offset: 2px;
+}

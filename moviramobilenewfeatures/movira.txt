@@ -1,0 +1,27 @@
+﻿Rank	Model			 Coding	Speed	Reliability	         Best use
+
+🥇 1	MiMo V2.6 Flash	⭐⭐⭐⭐⭐	⭐⭐⭐⭐⭐	⭐⭐⭐⭐⭐	Best overall coding
+
+🥈 2	Muse Spark 1.3	⭐⭐⭐⭐⭐	⭐⭐⭐⭐	⭐⭐⭐⭐⭐	Complex coding / debugging
+
+🥉 3	Space Bunny	⭐⭐⭐⭐½	⭐⭐⭐⭐	⭐⭐⭐⭐	App/UI development
+
+      4	LongCat R.1 Preview	⭐⭐⭐⭐	⭐⭐⭐½	⭐⭐⭐⭐	General coding
+
+      5	Ling 3.1 Flash	⭐⭐⭐⭐	⭐⭐⭐⭐⭐	⭐⭐⭐½	Fast coding/editing
+
+      6	Nemotron 3 Ultra	⭐⭐⭐⭐	⭐⭐⭐	⭐⭐⭐⭐	Reasoning / large tasks
+
+      7	Fledge Alpha	⭐⭐⭐½	⭐⭐⭐⭐	⭐⭐⭐	Quick coding
+
+      8	Big Pickle	⭐⭐⭐½	⭐⭐⭐⭐	⭐⭐⭐½	Simple/medium projects
+
+      9	Ling 3.0 Flash	⭐⭐⭐½	⭐⭐⭐⭐⭐	⭐⭐⭐	Fast/simple changes
+
+     10	Nemotron 3.5 Lightning	⭐⭐⭐	⭐⭐⭐⭐⭐	⭐⭐½	Speed-focused tasks
+
+     11	Exo	⭐⭐⭐	⭐⭐⭐⭐	⭐⭐½
+
+
+
+

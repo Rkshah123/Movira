@@ -1,0 +1,32 @@
+pluginManagement {
+    includeBuild("../node_modules/@react-native/gradle-plugin")
+}
+
+plugins {
+    id("com.facebook.react.settings")
+}
+
+extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
+    ex.autolinkLibrariesFromCommand()
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+    }
+}
+
+rootProject.name = 'Movira'
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        reactAndroidLibs {
+            from(files("../node_modules/react-native/gradle/libs.versions.toml"))
+        }
+    }
+}
+
+include ':app'

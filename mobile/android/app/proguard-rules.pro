@@ -1,0 +1,3 @@
+-keep class com.doublesymmetry.trackplayer.** { *; }
+-keep class com.facebook.react.** { *; }
+-dontwarn com.facebook.react.**

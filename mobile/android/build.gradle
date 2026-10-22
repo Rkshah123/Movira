@@ -1,0 +1,58 @@
+buildscript {
+    ext {
+        buildToolsVersion = "35.0.0"
+        minSdkVersion = 24
+        compileSdkVersion = 35
+        targetSdkVersion = 35
+        ndkVersion = "28.2.13676358"
+        kotlinVersion = "2.1.20"
+        ReactNativeFs = [
+            kotlinVersion: "2.1.20",
+            minSdkVersion: 24,
+            compileSdkVersion: 35
+        ]
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.12.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.20")
+    }
+}
+
+plugins {
+    id("com.facebook.react") version "0.85.1" apply false
+}
+
+subprojects { sub ->
+    // Several React Native libraries (@react-native-community/slider among
+    // them) still declare the LEGACY, version-less
+    //     classpath("com.facebook.react:react-native-gradle-plugin")
+    // in their own buildscript. That resolved fine while RN exposed the plugin
+    // as a Gradle subproject, but RN 0.71+ moved it into the settings-level
+    // `pluginManagement { includeBuild(...) }` composite, which does not publish
+    // Maven coordinates at all. The version-less dependency then fails
+    // configuration outright:
+    //     Could not find com.facebook.react:react-native-gradle-plugin:
+    //     Required by: project :react-native-community_slider
+    // which kills `assembleRelease` before a single task runs.
+    //
+    // The plugin IS still published to Maven — React Native ships its own local
+    // repository at @react-native/gradle-plugin/maven, pinned to version 0.0.0
+    // because it is built from source alongside the app. Point the subprojects'
+    // buildscript classpaths at that repository and pin the version there.
+    //
+    // The previous version of this block instead ADDED a second, equally
+    // version-less dependency to the same project, which is why the build still
+    // failed: it never removed the unresolvable one.
+    sub.buildscript {
+        repositories {
+            maven { url "${rootDir}/../node_modules/@react-native/gradle-plugin/maven" }
+        }
+        configurations.classpath.resolutionStrategy {
+            force 'com.facebook.react:react-native-gradle-plugin:0.0.0'
+        }
+    }
+}

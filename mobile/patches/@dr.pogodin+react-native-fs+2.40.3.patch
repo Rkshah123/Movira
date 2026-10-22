@@ -1,0 +1,62 @@
+diff --git a/node_modules/@dr.pogodin/react-native-fs/android/src/main/java/com/drpogodin/reactnativefs/ReactNativeFsModule.kt b/node_modules/@dr.pogodin/react-native-fs/android/src/main/java/com/drpogodin/reactnativefs/ReactNativeFsModule.kt
+index dc147db..cad175c 100644
+--- a/node_modules/@dr.pogodin/react-native-fs/android/src/main/java/com/drpogodin/reactnativefs/ReactNativeFsModule.kt
++++ b/node_modules/@dr.pogodin/react-native-fs/android/src/main/java/com/drpogodin/reactnativefs/ReactNativeFsModule.kt
+@@ -15,6 +15,7 @@ import android.util.Base64OutputStream
+ import android.util.SparseArray
+ import androidx.activity.result.ActivityResultLauncher
+ import androidx.activity.result.contract.ActivityResultContracts.OpenDocument
++import androidx.activity.result.contract.ActivityResultContracts.OpenMultipleDocuments
+ import com.drpogodin.reactnativefs.DownloadParams.OnDownloadBegin
+ import com.drpogodin.reactnativefs.DownloadParams.OnDownloadProgress
+ import com.drpogodin.reactnativefs.DownloadParams.OnTaskCompleted
+@@ -50,6 +51,7 @@ class ReactNativeFsModule(reactContext: ReactApplicationContext) :
+     private val uploaders = SparseArray<Uploader>()
+     private val pendingPickFilePromises = ArrayDeque<Promise>()
+     private var pickFileLauncher: ActivityResultLauncher<Array<String>>? = null
++    private var pickFilesLauncher: ActivityResultLauncher<Array<String>>? = null
+     private fun getPickFileLauncher(): ActivityResultLauncher<Array<String>> {
+         if (pickFileLauncher == null) {
+             val registry = (reactApplicationContext.currentActivity as ReactActivity).activityResultRegistry
+@@ -65,8 +67,28 @@ class ReactNativeFsModule(reactContext: ReactApplicationContext) :
+         return pickFileLauncher!!
+     }
+ 
++    // MOVIRA PATCH: OpenDocument() is single-select and the stock module
++    // ignores the caller's pickerType, so `pickerType: 'multipleFiles'`
++    // silently degraded to one file per round-trip. This launcher honours
++    // EXTRA_ALLOW_MULTIPLE.
++    private fun getPickFilesLauncher(): ActivityResultLauncher<Array<String>> {
++        if (pickFilesLauncher == null) {
++            val registry = (reactApplicationContext.currentActivity as ReactActivity).activityResultRegistry
++            pickFilesLauncher = registry.register<Array<String>, List<Uri>>(
++                    "RNFS_pickFiles",
++                    OpenMultipleDocuments()
++            ) { uris ->
++                val res = Arguments.createArray()
++                if (uris != null) for (uri in uris) res.pushString(uri.toString())
++                pendingPickFilePromises.pop().resolve(res)
++            }
++        }
++        return pickFilesLauncher!!
++    }
++
+     protected fun finalize() {
+         if (pickFileLauncher != null) pickFileLauncher!!.unregister()
++        if (pickFilesLauncher != null) pickFilesLauncher!!.unregister()
+     }
+ 
+     override fun getTypedExportedConstants(): Map<String, Any?> {
+@@ -469,7 +491,11 @@ class ReactNativeFsModule(reactContext: ReactApplicationContext) :
+         // promises in FILO stack we should be able to resolve them in the correct
+         // order.
+         pendingPickFilePromises.push(promise)
+-        getPickFileLauncher().launch(mimeTypes)
++        if (options.getString("pickerType") == "multipleFiles") {
++            getPickFilesLauncher().launch(mimeTypes)
++        } else {
++            getPickFileLauncher().launch(mimeTypes)
++        }
+     }
+ 
+     override fun read(

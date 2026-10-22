@@ -1,0 +1,130 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <!-- Lets the folder browser walk arbitrary user folders (Documents, SD card),
+         not just the standard media dirs. Granted by the user from Settings. -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+
+    <!--
+      Package visibility (enforced from Android 11 / API 30): on targetSdk 35 the
+      platform hides every package this app has not declared here, so
+      `PackageManager.resolveActivity` returns null for anything unlisted — even
+      the user's own browser.
+
+      The About screen's link dialog needs to resolve the default browser so it
+      can pin the intent to it. Without this block `openInBrowser` resolves
+      nothing, finds no handler, and every link silently does nothing.
+
+      http/https are the schemes the three profile links use; BROWSABLE is the
+      category that separates real browsers from apps claiming a specific host
+      (this is what lets the GitHub tile open in Chrome instead of the GitHub
+      app, which has no matching entry for a bare http probe).
+    -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="http" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
+    <application
+        android:name=".MainApplication"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:allowBackup="false"
+        android:usesCleartextTraffic="false"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="fullUser"
+            android:supportsPictureInPicture="true"
+            android:resizeableActivity="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!--
+              "Open with" registration.
+
+              Without a VIEW filter the activity can only be started by its own
+              LAUNCHER entry, so Android had no reason to offer Movira when the
+              user tapped a video or audio file in a file manager — the chooser
+              only lists activities that declare a matching filter.
+
+              `content` is the scheme that actually matters: every modern file
+              manager (DocumentsUI, the system Downloads app, Google Drive) hands
+              over a `content://` URI and nothing else. There is no filesystem
+              path to derive, so the intent must be read as a URI and resolved
+              through ContentResolver.
+
+              `file` is kept for older senders and for apps that still pass a
+              bare path.
+
+              `video/*` and `audio/*` are wildcards, so they already cover the
+              concrete types — video/mp4, video/mkv, video/webm, video/3gpp,
+              video/mpeg, video/ts, audio/mpeg, audio/mp4, audio/aac, audio/wav,
+              audio/ogg, audio/flac and audio/x-matroska among them. Listing
+              them individually would add no matches, only noise. What does not
+              match `video/*` or `audio/*` is a document or an image, which
+              Movira should not be offered for.
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="content" />
+                <data android:host="*" />
+                <data android:mimeType="video/*" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="video/*" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name="com.doublesymmetry.trackplayer.service.MusicService"
+            android:foregroundServiceType="mediaPlayback"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="com.doublesymmetry.trackplayer.service.MusicService$Receiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

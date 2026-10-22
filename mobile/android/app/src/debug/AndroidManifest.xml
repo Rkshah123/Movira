@@ -1,0 +1,24 @@
+<!--
+  DEBUG-ONLY manifest overlay.
+
+  The main manifest sets android:usesCleartextTraffic="false", which is correct
+  for a release build. But a DEBUG build loads its JavaScript from the Metro dev
+  server over plain http://10.0.2.2:8081 (emulator) or http://<lan-ip>:8081
+  (physical device), and Android blocks cleartext HTTP from API 28 upward.
+
+  Without this file a debug APK installs fine, launches, and then dies with
+  "Could not connect to development server" — which is exactly the
+  "the app does not open on my phone" report. Metro must be running for a debug
+  build; a release build embeds the bundle and needs neither this nor Metro.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application
+        android:usesCleartextTraffic="true"
+        tools:targetApi="28"
+        tools:replace="android:usesCleartextTraffic"
+        tools:ignore="GoogleAppIndexingWarning" />
+</manifest>

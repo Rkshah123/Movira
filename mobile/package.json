@@ -1,0 +1,45 @@
+{
+  "name": "movira-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "postinstall": "node scripts/fix-trackplayer-void.cjs && node scripts/fix-trackplayer-rn085-service.cjs && patch-package",
+    "android": "react-native run-android",
+    "android:release": "react-native run-android --mode release",
+    "apk:debug": "cd android && gradlew.bat assembleDebug",
+    "apk:release": "cd android && gradlew.bat assembleRelease",
+    "bundle:release": "cd android && gradlew.bat bundleRelease",
+    "clean": "cd android && gradlew.bat clean",
+    "start": "react-native start",
+    "typecheck": "tsc --noEmit",
+    "fix:trackplayer": "node scripts/fix-trackplayer-void.cjs && node scripts/fix-trackplayer-rn085-service.cjs"
+  },
+  "dependencies": {
+    "@dr.pogodin/react-native-fs": "^2.40.3",
+    "@react-native-async-storage/async-storage": "^3.1.1",
+    "@react-native-community/slider": "^5.2.1",
+    "@react-native-vector-icons/material-design-icons": "^13.1.4",
+    "react": "19.2.3",
+    "react-native": "0.85.1",
+    "react-native-track-player": "^4.1.2",
+    "react-native-video": "^6.19.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.2",
+    "@babel/runtime": "^7.25.2",
+    "@react-native-community/cli": "latest",
+    "@react-native/babel-preset": "0.85.1",
+    "@react-native/eslint-config": "0.85.1",
+    "@react-native/metro-config": "0.85.1",
+    "@react-native/typescript-config": "0.85.1",
+    "@types/react": "^19.1.0",
+    "babel-plugin-module-resolver": "^5.0.3",
+    "patch-package": "^8.0.1",
+    "postinstall-postinstall": "^2.1.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

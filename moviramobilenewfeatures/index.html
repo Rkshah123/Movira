@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Movira</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="phone-app">
+
+    <!-- =========================================================
+         HOME / VIDEO
+         ========================================================= -->
+    <section class="screen screen-home" id="home">
+
+      <header class="top-bar">
+        <div class="brand">
+          <div class="movira-logo" aria-hidden="true">
+            <span></span>
+          </div>
+          <span class="brand-name">Movira</span>
+        </div>
+
+        <div class="top-actions">
+          <button class="icon-button" aria-label="Search">
+            <span class="search-icon"></span>
+          </button>
+
+          <button class="icon-button" aria-label="More">
+            <span class="dots-vertical"></span>
+          </button>
+        </div>
+      </header>
+
+      <div class="sub-navigation video-navigation">
+        <button class="sub-tab active">Video</button>
+        <button class="sub-tab">Playlist</button>
+      </div>
+
+      <div class="content-area empty-content">
+        <p>No media files found, please trasfer some files to your device or adjust your preferences.</p>
+      </div>
+
+      <nav class="bottom-navigation">
+        <label for="video-tab" class="bottom-item active">
+          <span class="nav-symbol video-symbol"></span>
+          <span>Video</span>
+        </label>
+
+        <label for="audio-tab" class="bottom-item">
+          <span class="nav-symbol audio-symbol"></span>
+          <span>Audio</span>
+        </label>
+
+        <label for="browse-tab" class="bottom-item">
+          <span class="nav-symbol browse-symbol"></span>
+          <span>Browse</span>
+        </label>
+
+        <label for="playlist-tab" class="bottom-item">
+          <span class="nav-symbol playlist-symbol"></span>
+          <span>Playlist</span>
+        </label>
+
+        <label for="more-tab" class="bottom-item">
+          <span class="nav-symbol more-symbol"></span>
+          <span>More</span>
+        </label>
+      </nav>
+    </section>
+
+
+    <!-- =========================================================
+         CSS TAB CONTROLS
+         ========================================================= -->
+    <input type="radio" name="page" id="video-tab" checked>
+    <input type="radio" name="page" id="audio-tab">
+    <input type="radio" name="page" id="browse-tab">
+    <input type="radio" name="page" id="playlist-tab">
+    <input type="radio" name="page" id="more-tab">
+
+
+    <!-- =========================================================
+         AUDIO
+         ========================================================= -->
+    <section class="screen page-screen screen-audio">
+
+      <header class="top-bar">
+        <div class="brand">
+          <div class="movira-logo" aria-hidden="true"><span></span></div>
+          <span class="brand-name">Movira</span>
+        </div>
+
+        <div class="top-actions">
+          <button class="icon-button" aria-label="Search">
+            <span class="search-icon"></span>
+          </button>
+          <button class="icon-button" aria-label="More">
+            <span class="dots-vertical"></span>
+          </button>
+        </div>
+      </header>
+
+      <div class="sub-navigation audio-navigation">
+        <button class="sub-tab active">Artists</button>
+        <button class="sub-tab">Albums</button>
+        <button class="sub-tab">Tracks</button>
+        <button class="sub-tab">Genres</button>
+        <button class="sub-tab">Playlists</button>
+      </div>
+
+      <div class="content-area empty-content">
+        <p>No media files found, please trasfer some files to your device or adjust your preferences.</p>
+      </div>
+
+      <nav class="bottom-navigation">
+        <label for="video-tab" class="bottom-item">
+          <span class="nav-symbol video-symbol"></span>
+          <span>Video</span>
+        </label>
+        <label for="audio-tab" class="bottom-item active">
+          <span class="nav-symbol audio-symbol"></span>
+          <span>Audio</span>
+        </label>
+        <label for="browse-tab" class="bottom-item">
+          <span class="nav-symbol browse-symbol"></span>
+          <span>Browse</span>
+        </label>
+        <label for="playlist-tab" class="bottom-item">
+          <span class="nav-symbol playlist-symbol"></span>
+          <span>Playlist</span>
+        </label>
+        <label for="more-tab" class="bottom-item">
+          <span class="nav-symbol more-symbol"></span>
+          <span>More</span>
+        </label>
+      </nav>
+    </section>
+
+
+    <!-- =========================================================
+         BROWSE
+         ========================================================= -->
+    <section class="screen page-screen screen-browse">
+
+      <header class="top-bar">
+        <div class="brand">
+          <div class="movira-logo" aria-hidden="true"><span></span></div>
+          <span class="brand-name">Movira</span>
+        </div>
+
+        <div class="top-actions">
+          <button class="icon-button" aria-label="More">
+            <span class="dots-vertical"></span>
+          </button>
+        </div>
+      </header>
+
+      <div class="browse-content">
+
+        <div class="browse-group">
+          <button class="browse-box">
+            <span class="box-symbol favorite-symbol"></span>
+            <span>Favorite</span>
+          </button>
+
+          <button class="browse-box">
+            <span class="box-symbol download-symbol"></span>
+            <span>Download</span>
+          </button>
+
+          <button class="browse-box">
+            <span class="box-symbol movie-symbol"></span>
+            <span>Movie</span>
+          </button>
+
+          <button class="browse-box">
+            <span class="box-symbol music-symbol"></span>
+            <span>Music</span>
+          </button>
+        </div>
+
+        <div class="browse-group storage-group">
+          <button class="browse-box">
+            <span class="box-symbol storage-symbol"></span>
+            <span>Internal Memory</span>
+          </button>
+
+          <button class="browse-box">
+            <span class="box-symbol sd-symbol"></span>
+            <span>SD Card</span>
+          </button>
+        </div>
+
+      </div>
+
+      <nav class="bottom-navigation">
+        <label for="video-tab" class="bottom-item">
+          <span class="nav-symbol video-symbol"></span>
+          <span>Video</span>
+        </label>
+        <label for="audio-tab" class="bottom-item">
+          <span class="nav-symbol audio-symbol"></span>
+          <span>Audio</span>
+        </label>
+        <label for="browse-tab" class="bottom-item active">
+          <span class="nav-symbol browse-symbol"></span>
+          <span>Browse</span>
+        </label>
+        <label for="playlist-tab" class="bottom-item">
+          <span class="nav-symbol playlist-symbol"></span>
+          <span>Playlist</span>
+        </label>
+        <label for="more-tab" class="bottom-item">
+          <span class="nav-symbol more-symbol"></span>
+          <span>More</span>
+        </label>
+      </nav>
+    </section>
+
+
+    <!-- =========================================================
+         PLAYLIST
+         ========================================================= -->
+    <section class="screen page-screen screen-playlist">
+
+      <header class="top-bar">
+        <div class="brand">
+          <div class="movira-logo" aria-hidden="true"><span></span></div>
+          <span class="brand-name">Movira</span>
+        </div>
+
+        <div class="top-actions">
+          <button class="icon-button" aria-label="Search">
+            <span class="search-icon"></span>
+          </button>
+          <button class="icon-button" aria-label="More">
+            <span class="dots-vertical"></span>
+          </button>
+        </div>
+      </header>
+
+      <div class="content-area empty-content playlist-empty">
+        <p>No playlist found</p>
+      </div>
+
+      <nav class="bottom-navigation">
+        <label for="video-tab" class="bottom-item">
+          <span class="nav-symbol video-symbol"></span>
+          <span>Video</span>
+        </label>
+        <label for="audio-tab" class="bottom-item">
+          <span class="nav-symbol audio-symbol"></span>
+          <span>Audio</span>
+        </label>
+        <label for="browse-tab" class="bottom-item">
+          <span class="nav-symbol browse-symbol"></span>
+          <span>Browse</span>
+        </label>
+        <label for="playlist-tab" class="bottom-item active">
+          <span class="nav-symbol playlist-symbol"></span>
+          <span>Playlist</span>
+        </label>
+        <label for="more-tab" class="bottom-item">
+          <span class="nav-symbol more-symbol"></span>
+          <span>More</span>
+        </label>
+      </nav>
+    </section>
+
+
+    <!-- =========================================================
+         MORE
+         ========================================================= -->
+    <section class="screen page-screen screen-more">
+
+      <header class="top-bar">
+        <div class="brand">
+          <div class="movira-logo" aria-hidden="true"><span></span></div>
+          <span class="brand-name">Movira</span>
+        </div>
+
+        <div class="top-actions">
+          <button class="icon-button" aria-label="More">
+            <span class="dots-vertical"></span>
+          </button>
+        </div>
+      </header>
+
+      <div class="more-content">
+        <button class="settings-box">
+          <span class="box-symbol settings-symbol"></span>
+          <span>Setting</span>
+        </button>
+
+        <button class="settings-box" id="about-open">
+          <span class="box-symbol about-symbol"></span>
+          <span>About</span>
+        </button>
+      </div>
+
+      <nav class="bottom-navigation">
+        <label for="video-tab" class="bottom-item">
+          <span class="nav-symbol video-symbol"></span>
+          <span>Video</span>
+        </label>
+        <label for="audio-tab" class="bottom-item">
+          <span class="nav-symbol audio-symbol"></span>
+          <span>Audio</span>
+        </label>
+        <label for="browse-tab" class="bottom-item">
+          <span class="nav-symbol browse-symbol"></span>
+          <span>Browse</span>
+        </label>
+        <label for="playlist-tab" class="bottom-item">
+          <span class="nav-symbol playlist-symbol"></span>
+          <span>Playlist</span>
+        </label>
+        <label for="more-tab" class="bottom-item active">
+          <span class="nav-symbol more-symbol"></span>
+          <span>More</span>
+        </label>
+      </nav>
+    </section>
+
+
+    <!-- =========================================================
+         ABOUT
+         CSS-only modal checkbox
+         ========================================================= -->
+    <input type="checkbox" id="about-modal">
+
+    <section class="modal about-modal">
+      <div class="modal-page">
+
+        <header class="about-header">
+          <label for="about-modal" class="back-button" aria-label="Back">
+            <span class="back-arrow"></span>
+          </label>
+          <span>About</span>
+        </header>
+
+        <div class="about-content">
+
+          <div class="large-movira-logo">
+            <div class="movira-logo large" aria-hidden="true"><span></span></div>
+          </div>
+
+          <h1>Movira</h1>
+          <p class="android-text">Movira for Android</p>
+
+          <button class="about-row">
+            <span class="about-row-icon website-symbol"></span>
+            <span>Official website</span>
+          </button>
+
+          <label for="author-modal" class="about-row">
+            <span class="about-row-icon developer-symbol"></span>
+            <span>Authors / Developer</span>
+          </label>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =========================================================
+         AUTHORS / DEVELOPER
+         ========================================================= -->
+    <input type="checkbox" id="author-modal">
+
+    <section class="modal author-modal">
+      <div class="author-page">
+
+        <header class="author-header">
+          <label for="author-modal" class="close-button" aria-label="Cancel">
+            <span>×</span>
+          </label>
+          <h2>Authors and Developer</h2>
+        </header>
+
+        <div class="author-content">
+          <div class="author-name">Khan</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Refresh visual control -->
+    <button class="refresh-float" aria-label="Refresh">
+      <span class="refresh-symbol">↻</span>
+    </button>
+
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,1570 @@
+:root {
+  --bg: #0b0d12;
+  --bg-1: #11141c;
+  --bg-2: #171b26;
+  --bg-3: #1f2432;
+  --text: #e8ebf2;
+  --text-dim: #9aa3b5;
+  --accent: #e5484d;
+  --accent-2: #ff6b6f;
+  --border: #232937;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme='light'] {
+  --bg: #f4f5f9;
+  --bg-1: #ffffff;
+  --bg-2: #eef0f6;
+  --bg-3: #e4e7f0;
+  --text: #1a1d26;
+  --text-dim: #5c6474;
+  --border: #d8dbe6;
+  --shadow: 0 8px 30px rgba(20, 25, 40, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  user-select: none;
+}
+
+.loading-screen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.app {
+  display: flex;
+  height: 100%;
+}
+
+/* VLC-style layout: single top menu bar above the main area. */
+.app-with-topbar {
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 14px;
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  /* Above the section click-fence (z-index 35): section navigation and the
+     mini transport must stay reachable while a panel is open. */
+  position: relative;
+  z-index: 50;
+}
+
+.topbar .brand {
+  padding: 0;
+  border: 0;
+  flex-shrink: 0;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.topbar-actions .btn {
+  padding: 6px 12px;
+  white-space: nowrap;
+}
+
+.topbar-nav.active {
+  background: var(--bg-3);
+  border-color: var(--accent);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.topbar-mini {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px 8px;
+  min-width: 0;
+}
+
+.topbar-mini-info {
+  min-width: 0;
+  margin-right: 8px;
+  max-width: 220px;
+}
+
+.topbar-mini-title {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-mini-sub {
+  font-size: 10px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-mini button {
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.topbar-mini button:hover { background: var(--bg-3); }
+
+/* Home view: VLC-like idle screen with the big app logo. */
+/* ---------------------------------------------------------------- startup --
+ * The startup screen is the bare symbol on the empty player area. The
+ * FloatingPanel wrapper is kept only for its Escape / click-away behaviour,
+ * so its window chrome (border, background, shadow, padding) is switched off
+ * here — otherwise the logo would sit inside exactly the kind of box the
+ * design is trying to avoid.
+ */
+.floating-panel[data-floating='home'] {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.startup-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 60px;
+  /* Let clicks fall through to the click-away handler instead of swallowing
+   * them on an element that covers the whole panel. */
+  pointer-events: none;
+}
+
+.startup-logo {
+  width: min(260px, 34vh);
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ------------------------------------------------------------- media menu -- */
+/* "Media" in the menu bar opens a dropdown, VLC-style, rather than being a
+ * destination of its own. */
+.media-menu {
+  position: relative;
+  display: inline-flex;
+}
+
+.media-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 60;
+  min-width: 232px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.media-menu-item {
+  appearance: none;
+  border: none;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.media-menu-item:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* The brand is now a button (opens the Home window like VLC's menu). */
+button.brand {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+button.brand:hover .brand-name {
+  color: var(--text);
+}
+
+
+/* Close (✕) button that exits a section back to the home screen. */
+.section-close {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-close:hover {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.header-close { margin-left: auto; }
+
+.playlists-view { position: relative; }
+
+.playlists-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 30;
+}
+
+.stage-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #eee;
+}
+
+.stage-close:hover { background: var(--accent); }
+
+/* Keep the title readable next to the stage close button (windowed mode). */
+.now-playing-meta.np-shifted { left: 56px; }
+
+.sidebar {
+  width: 230px;
+  background: var(--bg-1);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  gap: 14px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px;
+}
+
+.brand-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.brand-name {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.open-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.nav-item:hover { background: var(--bg-2); color: var(--text); }
+
+.nav-item.active {
+  background: var(--bg-3);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.nav-icon { width: 18px; text-align: center; }
+
+.mini-player {
+  margin-top: auto;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.mini-title {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mini-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+.mini-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.mini-controls button {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-size: 15px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.mini-controls button:hover { background: var(--bg-3); }
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  /* A flex item defaults to min-height:auto, so the main area could never
+     shrink below its content: the player chain below measured its height
+     from the video's intrinsic ratio and pushed the transport bar off the
+     bottom of the window (body has overflow:hidden, so Pause/timeline were
+     permanently unclickable). min-height:0 lets it actually fit.
+     position:relative anchors the floating secondary windows to THIS area, so
+     they centre over the main screen instead of the whole window. */
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.btn {
+  background: var(--bg-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn:hover { background: var(--bg-3); }
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-primary:hover { background: var(--accent-2); }
+
+.btn:disabled { opacity: 0.5; cursor: default; }
+
+/* Player */
+
+.player-view {
+  display: flex;
+  flex-direction: column;
+  /* flex:1 + min-height:0 (not height:100%): the parent main area must be
+     allowed to shrink, or the stage grows to the video's intrinsic height and
+     the transport ends up below the fold. */
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+.player-stage {
+  flex: 1;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.player-stage.fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  border-radius: 0;
+}
+
+/* VLC-like cursor suppression while the fullscreen controls are hidden. */
+.movira-hide-cursor {
+  cursor: none;
+  pointer-events: auto;
+}
+
+/*
+ * Fullscreen auto-hide animation (spec: "extremely smooth, subtle, natural
+ * fade/slide — never sudden or jarring"). 350ms cubic-bezier with a soft
+ * settle; the bar keeps its hit area but stops intercepting clicks while
+ * hidden, so double-click-to-fullscreen still works on the video underneath.
+ */
+.player-view.fullscreen .transport {
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0s;
+}
+
+.player-view.fullscreen .transport.controls-hidden {
+  opacity: 0;
+  transform: translateY(14px);
+  visibility: hidden;
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.35s;
+}
+
+/* Non-fullscreen keeps the classic static bar (zero animation). */
+.player-view:not(.fullscreen) .transport {
+  transition: none;
+}
+
+.video-host {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 0;
+  /* Taken out of flow: a <video> with percentage heights contributes its
+     intrinsic ratio (width * h/w) to the column, which is what used to make
+     the stage 950px tall in a 763px window and hide the transport. Filling
+     the stage directly cannot influence layout at any window size. */
+  position: absolute;
+  inset: 0;
+}
+
+.video-host.video-active {
+  background: transparent;
+}
+
+.movira-video {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  background: transparent;
+  outline: none;
+  border: 0;
+  display: block;
+  z-index: 1;
+}
+
+.video-host.video-active .audio-artwork,
+.video-host.video-active .artwork-placeholder {
+  display: none;
+}
+
+.video-host.audio-active .movira-video {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0.001;
+  pointer-events: none;
+}
+
+.player-stage.fullscreen .now-playing-meta { z-index: 2; }
+
+/* Volume OSD, VLC-style. Driven straight from the DOM (flashVolume) so a fast
+   wheel gesture costs no React render. Sits over the video, centred, and never
+   intercepts the pointer - a wheel gesture must still reach the listener. */
+.volume-osd {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 6;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.62);
+  border: 1px solid var(--border);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.volume-osd.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.now-playing-meta {
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.now-playing-meta.controls-hidden {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.player-view.fullscreen .transport {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1001;
+  background: rgba(10, 11, 16, 0.92);
+  border-top: 1px solid var(--border);
+}
+
+.player-view.fullscreen .queue-panel,
+.player-view.fullscreen .subtitle-panel {
+  z-index: 1002;
+}
+
+.audio-artwork {
+  width: min(340px, 60%);
+  aspect-ratio: 1;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+}
+
+.audio-artwork img { width: 100%; height: 100%; object-fit: cover; }
+
+.artwork-placeholder {
+  font-size: 90px;
+  color: var(--text-dim);
+}
+
+.now-playing-meta {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+.np-title { font-size: 18px; font-weight: 700; }
+
+.np-sub { font-size: 13px; color: #cfd4e0; }
+
+.transport {
+  background: var(--bg-1);
+  border-top: 1px solid var(--border);
+  padding: 10px 16px 12px;
+  /* Above the secondary windows' backdrop (z-index 40): the transport stays
+     live while a floating panel is open, so Pause/Play is always reachable.
+     The fullscreen rule below overrides position/z-index with higher
+     specificity. */
+  position: relative;
+  z-index: 41;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.time {
+  font-size: 12px;
+  color: var(--text-dim);
+  min-width: 48px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Mouse-driven volume control (VolumeSlider.tsx) — same pointer model as the
+   timeline: the exact cursor X maps to the volume fraction, the drag continues
+   outside the bar via pointer capture, and the ball reveals on hover/drag.
+   The wheel gesture is handled by the .volume-zone wrapper below. */
+/* Groups the mute button + slider for the wheel listener. It MUST be a real
+   box, not display:contents: Chromium drops a display:contents subtree from
+   its flex container's intrinsic (max-content) sizing, so the 90px slider was
+   missing from the width calculation and the right-hand button group wrapped
+   onto two lines (and, before wrapping existed, pushed its tail off-screen). */
+.volume-zone {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+/* The volume button doubles as the volume READOUT: it shows the glyph AND the
+   current percentage, so a mouse-wheel step is visible the instant it happens.
+   data-volume carries the same number for tests. */
+.volume-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 58px;
+  padding: 7px 6px;
+}
+.volume-glyph {
+  font-size: 14px;
+  line-height: 1;
+}
+.volume-pct {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-2);
+  min-width: 22px;
+  text-align: right;
+}
+.volume-slider {
+  /* An explicit width, not flex-basis: Chromium only counts a flex-basis
+     item in its container's intrinsic (max-content) sizing when the item also
+     has a definite width. With flex-basis alone the slider contributed 0 to
+     the transport's intrinsic width, so the right-hand button group was laid
+     out too narrow and the slider covered the buttons after it. */
+  flex: none;
+  width: 90px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+  touch-action: none; /* pointer capture owns the gesture, not scroll */
+}
+.volume-slider-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: #2a2f3d;
+}
+.volume-slider-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent);
+  pointer-events: none;
+}
+.volume-slider-thumb {
+  position: absolute;
+  top: 50%;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+.volume-slider:hover .volume-slider-thumb,
+.volume-slider.dragging .volume-slider-thumb,
+.volume-slider:focus-visible .volume-slider-thumb {
+  opacity: 1;
+}
+.volume-slider:focus-visible .volume-slider-track {
+  box-shadow: 0 0 0 2px rgba(229, 72, 77, 0.35);
+}
+
+/* Pointer-driven seek timeline (Timeline.tsx): a click maps the exact cursor X
+   to a timestamp — no stepping, no double-click needed. The hit area is taller
+   than the visible track for comfortable targeting. */
+.timeline {
+  flex: 1;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+  touch-action: none; /* pointer capture owns the gesture, not scroll */
+}
+.timeline-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: #2a2f3d;
+}
+.timeline-buffered,
+.timeline-played {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 2px;
+  pointer-events: none;
+}
+.timeline-buffered { background: var(--bg-3); }
+.timeline-played { background: var(--accent); }
+.timeline-thumb {
+  position: absolute;
+  top: 50%;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+.timeline:hover .timeline-thumb,
+.timeline.dragging .timeline-thumb,
+.timeline:focus-visible .timeline-thumb {
+  opacity: 1;
+}
+.timeline:focus-visible .timeline-track {
+  box-shadow: 0 0 0 2px rgba(229, 72, 77, 0.35);
+}
+
+.controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  gap: 8px;
+  /* The two button groups need more width than most windows have: without
+     wrapping the tail (subtitle search / PiP / fullscreen) ran past the right
+     edge and could never be clicked. The stage absorbs the extra height. */
+  flex-wrap: wrap;
+  row-gap: 6px;
+}
+
+.left, .right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  /* Wrap inside a group only when the group alone cannot fit the window.
+     flex-shrink:0 is essential: a wrapping flex box has a one-item min-content
+     width, so without it the row squeezed each group to that width and the
+     buttons stacked inside it instead of the row wrapping between groups. */
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.transport button {
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-size: 16px;
+  /* 7px 9px pushed the row past ~1400px, wrapping the transport onto two
+     lines on ordinary laptop widths (and, before wrapping existed, pushing
+     the last buttons off-screen entirely). */
+  padding: 7px 7px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.transport button:hover { background: var(--bg-3); }
+
+.transport button.active { color: var(--accent); }
+
+.play-btn {
+  font-size: 22px !important;
+  color: var(--accent) !important;
+}
+
+.transport select {
+  background: var(--bg-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+/* Queue panel */
+
+.queue-panel {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  bottom: 110px;
+  width: 330px;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-header h3 { margin: 0; font-size: 14px; }
+
+.panel-actions { display: flex; gap: 6px; }
+
+.panel-actions button {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 4px 9px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.panel-actions button:hover { background: var(--bg-3); }
+
+.panel-actions button.active { color: var(--accent); border-color: var(--accent); }
+
+.queue-list {
+  overflow-y: auto;
+  flex: 1;
+  padding: 6px;
+}
+
+.queue-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.queue-item:hover { background: var(--bg-2); }
+
+.queue-item.current { background: var(--bg-3); }
+
+.q-index {
+  width: 22px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.q-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.q-title {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.q-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.q-duration {
+  font-size: 11px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.q-btn {
+  background: transparent;
+  border: 0;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 3px 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.q-btn:hover { color: var(--text); background: var(--bg-3); }
+
+.empty-note {
+  color: var(--text-dim);
+  font-size: 13px;
+  padding: 18px;
+  text-align: center;
+}
+
+/* Subtitle panel */
+
+.subtitle-panel {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 360px;
+  max-height: calc(100% - 130px);
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  z-index: 21;
+  overflow: hidden;
+}
+
+.subtitle-current {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+}
+
+.subtitle-current button {
+  background: transparent;
+  border: 0;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.subtitle-search-row {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+}
+
+.subtitle-search-row select {
+  flex: 1;
+  background: var(--bg-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px;
+}
+
+.subtitle-status {
+  padding: 0 12px 6px;
+  font-size: 12px;
+  color: var(--accent-2);
+}
+
+.subtitle-results {
+  overflow-y: auto;
+  flex: 1;
+  padding: 4px 8px;
+}
+
+.subtitle-result {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px;
+  border-radius: 6px;
+}
+
+.subtitle-result:hover { background: var(--bg-2); }
+
+.sr-lang {
+  background: var(--bg-3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.sr-label {
+  flex: 1;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subtitle-result button {
+  background: var(--bg-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 9px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.subtitle-note {
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
+}
+
+/* Library */
+
+.library-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.library-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 10px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tabs { display: flex; gap: 4px; }
+
+.tab {
+  background: transparent;
+  border: 0;
+  color: var(--text-dim);
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.tab:hover { color: var(--text); background: var(--bg-2); }
+
+.tab.active { background: var(--bg-3); color: var(--text); font-weight: 600; }
+
+.library-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.search {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  width: 260px;
+  outline: none;
+}
+
+.search:focus { border-color: var(--accent); }
+
+.folders-row {
+  display: flex;
+  gap: 8px;
+  padding: 0 18px 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.folder-chip {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px;
+  padding: 4px 6px 4px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-dim);
+}
+
+.folder-chip button {
+  background: transparent;
+  border: 0;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.folder-chip button:hover { color: var(--accent); }
+
+.media-grid {
+  flex: 1;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 14px;
+  padding: 8px 18px 18px;
+  align-content: start;
+}
+
+.media-card {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.12s ease;
+  position: relative;
+}
+
+.media-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+
+.media-thumb {
+  aspect-ratio: 16 / 10;
+  background: var(--bg-2) center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.media-thumb.audio { aspect-ratio: 1; }
+
+.thumb-icon { font-size: 34px; opacity: 0.5; }
+
+.thumb-duration {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.media-info { padding: 8px 10px 10px; }
+
+.media-title {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.media-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.media-card-actions {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+
+.media-card:hover .media-card-actions { opacity: 1; }
+
+.media-card-actions button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.media-card-actions button:hover { background: var(--accent); }
+
+/* Playlists */
+
+.playlists-view {
+  display: flex;
+  height: 100%;
+}
+
+.playlists-sidebar {
+  width: 280px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.playlist-create {
+  display: flex;
+  gap: 8px;
+  padding: 14px;
+}
+
+.playlist-create input {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.playlist-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 8px 8px;
+}
+
+.playlist-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+}
+
+.playlist-item:hover { background: var(--bg-2); }
+
+.playlist-item.active { background: var(--bg-3); }
+
+.pl-name {
+  flex: 1;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pl-count {
+  font-size: 11px;
+  background: var(--bg-2);
+  border-radius: 10px;
+  padding: 1px 8px;
+  color: var(--text-dim);
+}
+
+.pl-actions {
+  display: none;
+  gap: 2px;
+}
+
+.playlist-item:hover .pl-actions { display: flex; }
+
+.pl-actions button {
+  background: transparent;
+  border: 0;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.pl-actions button:hover { color: var(--accent); }
+
+.playlist-detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.playlist-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+.playlist-header h2 { margin: 0; font-size: 20px; }
+
+.pl-meta { color: var(--text-dim); font-size: 13px; }
+
+.playlist-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 12px 12px;
+}
+
+.playlist-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: 8px;
+}
+
+.playlist-row:hover { background: var(--bg-2); }
+
+/* Settings */
+
+/* VLC-style floating secondary windows (FloatingPanel.tsx): Settings, Library
+   and Playlists open as small dialogs over the main screen. There is
+   deliberately NO backdrop and no modal layer: nothing intercepts a click, so
+   opening Settings and then clicking Playlist is always a single click, and
+   the transport and top bar stay live underneath. */
+/* Click fence for the floating sections. It covers the player area only —
+   the top bar sits above it (z-index 50) so navigation is never blocked — so a
+   stray click beside a panel can no longer reach Play / Skip / Stop underneath.
+   Transparent on purpose: the player keeps rendering and keeps playing behind. */
+.section-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 35;
+  background: transparent;
+  cursor: default;
+}
+
+.floating-panel {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 40;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 24px);
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+}
+.floating-panel .settings-view {
+  min-height: 0;
+}
+.floating-panel .playlists-view,
+.floating-panel .library-view {
+  flex: 1;
+  min-height: 0;
+}
+
+.settings-view {
+  overflow-y: auto;
+  padding: 20px 26px 40px;
+  height: 100%;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.settings-header h2 { margin: 0 0 8px; }
+
+.saved-note { color: #4cc38a; font-size: 13px; }
+
+.settings-view section {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  max-width: 620px;
+}
+
+.settings-view h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.settings-view label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  font-size: 13px;
+}
+
+.settings-view label.check { justify-content: flex-start; }
+
+.settings-view select,
+.settings-view input[type='number'] {
+  background: var(--bg-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  width: 160px;
+}
+
+.settings-view input[type='range'] { width: 160px; }
+
+.privacy-row { display: flex; gap: 10px; }
+
+.about-line { font-size: 13px; color: var(--text-dim); margin: 4px 0 12px; }
+
+/* Misc */
+
+.player-empty {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--text-dim);
+}
+
+.empty-icon { width: 64px; opacity: 0.6; }
+
+.player-empty h2 { margin: 8px 0 0; color: var(--text); }
+
+/* Startup screen behind the floating logo: an inert, text-free stage. It keeps
+ * the layout (and the pointer surface) so the floating panel still centres on
+ * it, but it must never contribute a glyph or a caption of its own. */
+.player-empty--blank {
+  color: transparent;
+  user-select: none;
+}
+
+.error-toast {
+  position: fixed;
+  transition: opacity 0.3s ease;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2b1215;
+  color: #ff9b9e;
+  border: 1px solid var(--accent);
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  z-index: 100;
+  box-shadow: var(--shadow);
+  /* Informational only: it must never intercept clicks — it sits over the
+     transport, and a visible toast used to swallow timeline clicks (seek
+     appeared dead while the toast was up). */
+  pointer-events: none;
+}
+
+.audio-tracks { display: none; }
+
+/* Keep subtitle track legible over the contained video */
+.video-host.video-active video::-webkit-media-text-track-container { transform: translateY(-46px); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 5px; }
+
+::-webkit-scrollbar-thumb:hover { background: var(--border); }
+
+::-webkit-scrollbar-track { background: transparent; }
+
+/* VLC-style video zoom modes (key C): cycle fit → fill → stretch. The video
+   element fills the stage; object-fit controls how the frame maps into it. */
+.video-host.zoom-fit .movira-video { object-fit: contain; }
+.video-host.zoom-fill .movira-video { object-fit: cover; }
+.video-host.zoom-stretch .movira-video { object-fit: fill; }
+
+/* ---- Diagnostics (lag recorder) ---------------------------------------- */
+.diag-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 8px;
+  margin: 10px 0;
+}
+.diag-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.12));
+  border-radius: 6px;
+}
+.diag-grid span { font-size: 11px; opacity: 0.65; }
+.diag-grid b { font-size: 15px; font-variant-numeric: tabular-nums; }
+.diag-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.diag-table th,
+.diag-table td { padding: 4px 6px; text-align: left; font-variant-numeric: tabular-nums; }
+.diag-table th { opacity: 0.6; font-weight: 600; }
+.diag-table tbody tr { cursor: pointer; border-top: 1px solid var(--line, rgba(255, 255, 255, 0.08)); }
+.diag-table tbody tr:hover { background: rgba(127, 127, 127, 0.12); }
+.diag-table tbody tr.sel { background: rgba(220, 80, 80, 0.22); }
+.settings-view .hint { opacity: 0.6; font-size: 12px; margin: 6px 0; }
